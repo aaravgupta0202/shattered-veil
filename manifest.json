@@ -1,26 +1,16 @@
 {
   "name": "Shattered Veil",
   "short_name": "Shattered Veil",
-  "description": "An epic text-based aventure game of darkness, mystery and legend.",
-  "start_url": "/",
+  "description": "A dark fantasy text RPG. Explore the Obsidian Marsh, uncover ancient secrets, and face the Wraithcaller.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#0a0a0f",
-  "orientation": "portrait-primary",
+  "background_color": "#0d0518",
+  "theme_color": "#0d0518",
+  "orientation": "any",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "categories": ["games", "entertainment"],
-  "screenshots": []
+  "lang": "en"
 }

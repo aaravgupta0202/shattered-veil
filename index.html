@@ -1,207 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0a0f" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Shattered Veil" />
-  <meta name="description" content="An epic text-based RPG adventure of darkness, mystery and legend." />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a">
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <title>Shattered Veil — An Epic RPG</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0d0518"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Shattered Veil"/>
+  <meta name="description" content="A dark fantasy text RPG. Explore the Obsidian Marsh, uncover ancient secrets, and face the Wraithcaller."/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <title>Shattered Veil — Dark Fantasy RPG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <!-- ==================== STARTUP SCREEN ==================== -->
-  <div id="startup-screen" class="screen active">
-    <div class="startup-bg">
-      <div class="star-field" id="star-field"></div>
-      <div class="fog-layer"></div>
-    </div>
-    <div class="startup-content">
-      <div class="startup-logo">
-        <div class="logo-rune">☽</div>
-        <h1 class="logo-title">SHATTERED VEIL</h1>
-        <p class="logo-tagline">Where darkness breathes and legends are forged</p>
-      </div>
+<!-- ─── STARTUP SCREEN ─────────────────────────────────── -->
+<div id="startup-screen" class="active">
+  <canvas id="star-canvas"></canvas>
 
-      <div class="save-slots-section" id="save-slots-section">
-        <h2 class="section-heading">⚔️ Choose Your Path</h2>
-        <div class="save-slots" id="save-slots"></div>
-        <button class="btn btn-ghost" id="new-game-btn">✦ New Journey</button>
-      </div>
+  <!-- Floating rune particles -->
+  <div class="rune-particles" id="rune-particles"></div>
 
-      <div class="name-entry-section hidden" id="name-entry-section">
-        <h2 class="section-heading">Who are you, wanderer?</h2>
-        <input type="text" id="player-name-input" class="name-input" placeholder="Enter your name…" maxlength="22" autocomplete="off" />
-        <div class="save-slot-select">
-          <label>Save to slot:</label>
-          <div class="slot-btns" id="slot-select-btns"></div>
-        </div>
-        <div class="name-entry-btns">
-          <button class="btn btn-ghost" id="back-to-saves-btn">← Back</button>
-          <button class="btn btn-primary" id="begin-journey-btn">Begin Journey →</button>
-        </div>
-      </div>
+  <!-- Logo block -->
+  <div class="logo-block">
+    <div class="logo-icon">
+      <img src="icons/icon-192.png" alt="Shattered Veil" width="80" height="80"/>
     </div>
+    <h1 class="logo-title">Shattered Veil</h1>
+    <p class="logo-subtitle">A Dark Fantasy Chronicle</p>
+    <div class="logo-divider"><span>✦</span></div>
   </div>
 
-  <!-- ==================== GAME SCREEN ==================== -->
-  <div id="game-screen" class="screen">
+  <!-- Main startup card -->
+  <div class="startup-card">
 
-    <!-- TOP BAR (mobile) -->
-    <header class="top-bar">
-      <div class="top-bar-left">
-        <button class="icon-btn" id="menu-toggle" aria-label="Menu">☰</button>
-        <span class="top-location" id="top-location-label">Ashenreach</span>
-      </div>
-      <div class="top-bar-center">
-        <span class="top-title">SHATTERED VEIL</span>
-      </div>
-      <div class="top-bar-right">
-        <button class="icon-btn" id="stats-toggle" aria-label="Stats">⚔</button>
-        <button class="icon-btn" id="save-btn" aria-label="Save">💾</button>
-      </div>
-    </header>
-
-    <!-- GAME LAYOUT -->
-    <div class="game-layout">
-
-      <!-- LEFT SIDEBAR — Nav & Companions -->
-      <aside class="sidebar sidebar-left" id="sidebar-left">
-        <div class="sidebar-inner">
-          <button class="sidebar-close" id="sidebar-left-close">✕</button>
-
-          <!-- Quick Nav -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">📍 Navigate</h3>
-            <div id="quick-nav" class="quick-nav"></div>
-          </div>
-
-          <!-- Companions -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">🫂 Companions</h3>
-            <div id="companions-list" class="companions-list">
-              <p class="dim-text">No companions yet…</p>
-            </div>
-          </div>
-
-          <!-- Quest Log -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">📜 Quest Log</h3>
-            <div id="quest-log" class="quest-log">
-              <p class="dim-text">Seek your destiny…</p>
-            </div>
-          </div>
-
-          <!-- Save/Load -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">💾 Save Game</h3>
-            <div id="save-panel" class="save-panel"></div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- MAIN AREA -->
-      <main class="main-area">
-        <div class="story-scroll" id="story-scroll">
-          <div id="story-text" class="story-text"></div>
-        </div>
-        <div class="actions-area">
-          <div id="action-buttons" class="action-buttons"></div>
-        </div>
-      </main>
-
-      <!-- RIGHT SIDEBAR — Stats & Info -->
-      <aside class="sidebar sidebar-right" id="sidebar-right">
-        <div class="sidebar-inner">
-          <button class="sidebar-close" id="sidebar-right-close">✕</button>
-
-          <!-- Character Card -->
-          <div class="sidebar-section char-card">
-            <div class="char-name" id="char-name-display">Hero</div>
-            <div class="char-class" id="char-class-display">Wanderer · Lv 1</div>
-
-            <!-- HP / MP bars -->
-            <div class="vitals">
-              <div class="vital-row">
-                <span class="vital-label">❤ HP</span>
-                <div class="bar-wrap"><div class="bar hp-bar" id="hp-bar"></div></div>
-                <span class="vital-val" id="hp-text">100/100</span>
-              </div>
-              <div class="vital-row">
-                <span class="vital-label">✦ MP</span>
-                <div class="bar-wrap"><div class="bar mp-bar" id="mp-bar"></div></div>
-                <span class="vital-val" id="mp-text">40/40</span>
-              </div>
-              <div class="vital-row">
-                <span class="vital-label">⭐ XP</span>
-                <div class="bar-wrap"><div class="bar xp-bar" id="xp-bar"></div></div>
-                <span class="vital-val" id="xp-text">0/100</span>
-              </div>
-            </div>
-
-            <!-- Attributes -->
-            <div class="attrs-grid">
-              <div class="attr-chip">💪 <span id="str-val">6</span></div>
-              <div class="attr-chip">🏹 <span id="dex-val">5</span></div>
-              <div class="attr-chip">🧠 <span id="int-val">8</span></div>
-              <div class="attr-chip">💰 <span id="gold-val">30</span>g</div>
-            </div>
-          </div>
-
-          <!-- Location -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">📍 Location</h3>
-            <div class="location-card">
-              <div class="loc-name" id="loc-name">Ashenreach</div>
-              <div class="loc-desc" id="loc-desc">Central hub shrouded in eternal twilight</div>
-            </div>
-          </div>
-
-          <!-- Equipment -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">⚔️ Equipment</h3>
-            <div id="equipment-display" class="equipment-display"></div>
-          </div>
-
-          <!-- Inventory -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">🎒 Inventory</h3>
-            <div id="inventory-grid" class="inventory-grid"></div>
-          </div>
-
-          <!-- Spells -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-heading">✦ Spells</h3>
-            <div id="spell-list" class="spell-list"></div>
-          </div>
-        </div>
-      </aside>
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="play">⚔ Play</button>
+      <button class="tab-btn" data-tab="install">📲 Install</button>
     </div>
 
-    <!-- OVERLAY for sidebars on mobile -->
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <!-- ── PLAY TAB ── -->
+    <div class="tab-content active" id="tab-play">
+      <div class="save-section">
+        <h3 class="section-heading">Choose Your Save Slot</h3>
+        <div class="save-slots" id="save-slots">
+          <!-- Rendered by JS -->
+        </div>
+        <div class="new-game-row" id="new-game-form" style="display:none;">
+          <p class="form-label">Enter your name, traveller:</p>
+          <div class="name-input-row">
+            <input type="text" id="player-name" placeholder="Your name..." maxlength="20" autocomplete="off" spellcheck="false"/>
+            <button id="begin-btn" class="btn-primary">Begin</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- TOAST NOTIFICATIONS -->
-    <div id="toast-container" class="toast-container"></div>
+    <!-- ── INSTALL TAB ── -->
+    <div class="tab-content" id="tab-install">
+      <div class="install-section">
+        <p class="install-intro">Install Shattered Veil for the best experience — play offline, full-screen, no browser bars.</p>
+
+        <!-- Platform detector — shows correct one -->
+        <div id="install-android" class="install-platform" style="display:none;">
+          <div class="platform-header">
+            <span class="platform-icon">🤖</span>
+            <div>
+              <h4>Android / Chrome</h4>
+              <p>Direct install — no app store needed</p>
+            </div>
+          </div>
+          <button class="btn-install" id="android-install-btn">
+            <span class="install-btn-icon">⬇</span> Install App
+          </button>
+          <p class="install-note">Tap the button above. Chrome will show an install prompt.</p>
+        </div>
+
+        <div id="install-ios" class="install-platform" style="display:none;">
+          <div class="platform-header">
+            <span class="platform-icon"></span>
+            <div>
+              <h4>iPhone / iPad</h4>
+              <p>Add to Home Screen via Safari</p>
+            </div>
+          </div>
+          <div class="ios-steps">
+            <div class="ios-step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>Open in Safari</strong>
+                <span>Make sure you're using Safari, not Chrome or Firefox</span>
+              </div>
+            </div>
+            <div class="ios-step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Tap the Share button</strong>
+                <span>The <kbd>⬆</kbd> icon at the bottom of the screen</span>
+              </div>
+            </div>
+            <div class="ios-step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>Scroll and tap "Add to Home Screen"</strong>
+                <span>Look for the <kbd>+</kbd> box icon in the share sheet</span>
+              </div>
+            </div>
+            <div class="ios-step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <strong>Tap "Add"</strong>
+                <span>The app appears on your home screen instantly</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="install-desktop" class="install-platform" style="display:none;">
+          <div class="platform-header">
+            <span class="platform-icon">🖥</span>
+            <div>
+              <h4>Desktop / Laptop</h4>
+              <p>Install as a native-like app</p>
+            </div>
+          </div>
+          <button class="btn-install" id="desktop-install-btn">
+            <span class="install-btn-icon">⬇</span> Install App
+          </button>
+          <p class="install-note">Or click the install icon <kbd>⊕</kbd> in your browser's address bar.</p>
+        </div>
+
+        <div id="install-installed" class="install-platform" style="display:none;">
+          <div class="platform-header">
+            <span class="platform-icon">✅</span>
+            <div>
+              <h4>Already Installed</h4>
+              <p>You're playing the installed version!</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="install-fallback" class="install-platform">
+          <div class="platform-header">
+            <span class="platform-icon">🌐</span>
+            <div>
+              <h4>Add to Home Screen</h4>
+              <p>Works on iOS (Safari) and Android (Chrome)</p>
+            </div>
+          </div>
+          <div class="ios-steps">
+            <div class="ios-step">
+              <div class="step-num">📱</div>
+              <div class="step-body">
+                <strong>On Android:</strong>
+                <span>Chrome menu → "Add to Home Screen" or "Install App"</span>
+              </div>
+            </div>
+            <div class="ios-step">
+              <div class="step-num">🍎</div>
+              <div class="step-body">
+                <strong>On iPhone:</strong>
+                <span>Safari → Share button ⬆ → "Add to Home Screen"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /startup-card -->
+
+  <p class="startup-footer">Shattered Veil · v3.0 · Dark Fantasy RPG</p>
+</div><!-- /startup-screen -->
+
+<!-- ─── MODAL OVERLAY ────────────────────────────────────── -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-inner" id="modal-inner"></div>
+  </div>
+</div>
+
+<!-- ─── GAME CONTAINER ──────────────────────────────────── -->
+<div id="game-container">
+
+  <!-- Top bar (mobile) -->
+  <div class="top-bar">
+    <button class="sidebar-toggle" id="left-toggle" aria-label="Menu">☰</button>
+    <div class="topbar-title">
+      <span id="topbar-location">Ashenreach</span>
+    </div>
+    <div class="topbar-stats">
+      <span id="topbar-hp">❤ <span id="tb-hp">100</span></span>
+      <span id="topbar-gold">💰 <span id="tb-gold">30</span></span>
+    </div>
+    <button class="sidebar-toggle" id="right-toggle" aria-label="Stats">◈</button>
   </div>
 
-  <!-- SERVICE WORKER REGISTRATION -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
-  </script>
-  <script src="app.js"></script>
+  <!-- Overlays for mobile sidebars -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside class="sidebar sidebar-left" id="sidebar-left">
+    <div class="sidebar-close-row">
+      <span class="sidebar-logo">⚔ Shattered Veil</span>
+      <button class="close-sidebar" id="close-left">✕</button>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Navigation</h4>
+      <div class="nav-list" id="nav-list">
+        <button class="nav-btn" onclick="G.goTo('ashenreach')">🏙 Ashenreach</button>
+        <button class="nav-btn" onclick="G.goTo('marsh')">🌿 Obsidian Marsh</button>
+        <button class="nav-btn" onclick="G.saveGame()">💾 Save Game</button>
+        <button class="nav-btn" onclick="G.returnToMenu()">🏠 Main Menu</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Companions</h4>
+      <div id="companions-list" class="companions-list">
+        <p class="empty-note">No companions yet</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Quests</h4>
+      <div id="quest-list" class="quest-list">
+        <p class="empty-note">No active quests</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN AREA ── -->
+  <main class="main-area">
+    <div class="story-scroll" id="story-text"></div>
+    <div class="action-zone" id="action-zone">
+      <div class="action-buttons" id="action-buttons"></div>
+    </div>
+  </main>
+
+  <!-- ── RIGHT SIDEBAR ── -->
+  <aside class="sidebar sidebar-right" id="sidebar-right">
+    <div class="sidebar-close-row">
+      <span class="sidebar-logo">◈ Character</span>
+      <button class="close-sidebar" id="close-right">✕</button>
+    </div>
+
+    <div class="sidebar-section char-section">
+      <div class="char-name-row">
+        <span class="char-crown">♔</span>
+        <span id="player-name-display" class="char-name">—</span>
+        <span class="char-level-badge" id="level-badge">Lv 1</span>
+      </div>
+      <div class="stat-bars">
+        <div class="stat-bar-row">
+          <span class="stat-label">❤ HP</span>
+          <div class="bar-track"><div class="bar-fill hp-fill" id="health-bar"></div></div>
+          <span class="stat-num" id="health-text">100/100</span>
+        </div>
+        <div class="stat-bar-row">
+          <span class="stat-label">🔮 MP</span>
+          <div class="bar-track"><div class="bar-fill mp-fill" id="magic-bar"></div></div>
+          <span class="stat-num" id="magic-text">40/40</span>
+        </div>
+        <div class="stat-bar-row">
+          <span class="stat-label">⭐ XP</span>
+          <div class="bar-track"><div class="bar-fill xp-fill" id="xp-bar"></div></div>
+          <span class="stat-num" id="xp-text">0/100</span>
+        </div>
+      </div>
+      <div class="attr-grid">
+        <div class="attr-item">⚔<br><span id="strength-val">6</span><br><small>STR</small></div>
+        <div class="attr-item">🏃<br><span id="dexterity-val">5</span><br><small>DEX</small></div>
+        <div class="attr-item">🧠<br><span id="intelligence-val">8</span><br><small>INT</small></div>
+        <div class="attr-item">💰<br><span id="gold-val">30</span><br><small>GOLD</small></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Location</h4>
+      <div class="location-box">
+        <div class="location-name" id="location-name">Ashenreach</div>
+        <div class="location-desc" id="location-desc">The city of eternal twilight</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Equipped</h4>
+      <div id="equipped-weapon" class="equipped-item">⚔ Rusty Dagger (3–6 dmg)</div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Inventory</h4>
+      <div id="inventory-items" class="inventory-grid">
+        <p class="empty-note">Empty</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">Spells</h4>
+      <div id="spell-list" class="spell-list"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4 class="sidebar-heading">📜 Lore Discovered</h4>
+      <div id="lore-list" class="lore-list">
+        <p class="empty-note">Speak to NPCs to learn lore</p>
+      </div>
+    </div>
+  </aside>
+
+</div><!-- /game-container -->
+
+<script src="app.js"></script>
 </body>
 </html>
