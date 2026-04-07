@@ -1,7 +1,7 @@
 {
   "name": "Shattered Veil",
-  "short_name": "SV RPG",
-  "description": "An epic text-based RPG of darkness, mystery and legend.",
+  "short_name": "Shattered Veil",
+  "description": "An epic text-based aventure game of darkness, mystery and legend.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0f",
