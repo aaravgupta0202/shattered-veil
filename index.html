@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Shattered Veil" />
+  <meta name="description" content="An epic text-based RPG adventure of darkness, mystery and legend." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Shattered Veil — An Epic RPG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ==================== STARTUP SCREEN ==================== -->
+  <div id="startup-screen" class="screen active">
+    <div class="startup-bg">
+      <div class="star-field" id="star-field"></div>
+      <div class="fog-layer"></div>
+    </div>
+    <div class="startup-content">
+      <div class="startup-logo">
+        <div class="logo-rune">☽</div>
+        <h1 class="logo-title">SHATTERED VEIL</h1>
+        <p class="logo-tagline">Where darkness breathes and legends are forged</p>
+      </div>
+
+      <div class="save-slots-section" id="save-slots-section">
+        <h2 class="section-heading">⚔️ Choose Your Path</h2>
+        <div class="save-slots" id="save-slots"></div>
+        <button class="btn btn-ghost" id="new-game-btn">✦ New Journey</button>
+      </div>
+
+      <div class="name-entry-section hidden" id="name-entry-section">
+        <h2 class="section-heading">Who are you, wanderer?</h2>
+        <input type="text" id="player-name-input" class="name-input" placeholder="Enter your name…" maxlength="22" autocomplete="off" />
+        <div class="save-slot-select">
+          <label>Save to slot:</label>
+          <div class="slot-btns" id="slot-select-btns"></div>
+        </div>
+        <div class="name-entry-btns">
+          <button class="btn btn-ghost" id="back-to-saves-btn">← Back</button>
+          <button class="btn btn-primary" id="begin-journey-btn">Begin Journey →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="game-screen" class="screen">
+
+    <!-- TOP BAR (mobile) -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <button class="icon-btn" id="menu-toggle" aria-label="Menu">☰</button>
+        <span class="top-location" id="top-location-label">Ashenreach</span>
+      </div>
+      <div class="top-bar-center">
+        <span class="top-title">SHATTERED VEIL</span>
+      </div>
+      <div class="top-bar-right">
+        <button class="icon-btn" id="stats-toggle" aria-label="Stats">⚔</button>
+        <button class="icon-btn" id="save-btn" aria-label="Save">💾</button>
+      </div>
+    </header>
+
+    <!-- GAME LAYOUT -->
+    <div class="game-layout">
+
+      <!-- LEFT SIDEBAR — Nav & Companions -->
+      <aside class="sidebar sidebar-left" id="sidebar-left">
+        <div class="sidebar-inner">
+          <button class="sidebar-close" id="sidebar-left-close">✕</button>
+
+          <!-- Quick Nav -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">📍 Navigate</h3>
+            <div id="quick-nav" class="quick-nav"></div>
+          </div>
+
+          <!-- Companions -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">🫂 Companions</h3>
+            <div id="companions-list" class="companions-list">
+              <p class="dim-text">No companions yet…</p>
+            </div>
+          </div>
+
+          <!-- Quest Log -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">📜 Quest Log</h3>
+            <div id="quest-log" class="quest-log">
+              <p class="dim-text">Seek your destiny…</p>
+            </div>
+          </div>
+
+          <!-- Save/Load -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">💾 Save Game</h3>
+            <div id="save-panel" class="save-panel"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN AREA -->
+      <main class="main-area">
+        <div class="story-scroll" id="story-scroll">
+          <div id="story-text" class="story-text"></div>
+        </div>
+        <div class="actions-area">
+          <div id="action-buttons" class="action-buttons"></div>
+        </div>
+      </main>
+
+      <!-- RIGHT SIDEBAR — Stats & Info -->
+      <aside class="sidebar sidebar-right" id="sidebar-right">
+        <div class="sidebar-inner">
+          <button class="sidebar-close" id="sidebar-right-close">✕</button>
+
+          <!-- Character Card -->
+          <div class="sidebar-section char-card">
+            <div class="char-name" id="char-name-display">Hero</div>
+            <div class="char-class" id="char-class-display">Wanderer · Lv 1</div>
+
+            <!-- HP / MP bars -->
+            <div class="vitals">
+              <div class="vital-row">
+                <span class="vital-label">❤ HP</span>
+                <div class="bar-wrap"><div class="bar hp-bar" id="hp-bar"></div></div>
+                <span class="vital-val" id="hp-text">100/100</span>
+              </div>
+              <div class="vital-row">
+                <span class="vital-label">✦ MP</span>
+                <div class="bar-wrap"><div class="bar mp-bar" id="mp-bar"></div></div>
+                <span class="vital-val" id="mp-text">40/40</span>
+              </div>
+              <div class="vital-row">
+                <span class="vital-label">⭐ XP</span>
+                <div class="bar-wrap"><div class="bar xp-bar" id="xp-bar"></div></div>
+                <span class="vital-val" id="xp-text">0/100</span>
+              </div>
+            </div>
+
+            <!-- Attributes -->
+            <div class="attrs-grid">
+              <div class="attr-chip">💪 <span id="str-val">6</span></div>
+              <div class="attr-chip">🏹 <span id="dex-val">5</span></div>
+              <div class="attr-chip">🧠 <span id="int-val">8</span></div>
+              <div class="attr-chip">💰 <span id="gold-val">30</span>g</div>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">📍 Location</h3>
+            <div class="location-card">
+              <div class="loc-name" id="loc-name">Ashenreach</div>
+              <div class="loc-desc" id="loc-desc">Central hub shrouded in eternal twilight</div>
+            </div>
+          </div>
+
+          <!-- Equipment -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">⚔️ Equipment</h3>
+            <div id="equipment-display" class="equipment-display"></div>
+          </div>
+
+          <!-- Inventory -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">🎒 Inventory</h3>
+            <div id="inventory-grid" class="inventory-grid"></div>
+          </div>
+
+          <!-- Spells -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-heading">✦ Spells</h3>
+            <div id="spell-list" class="spell-list"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- OVERLAY for sidebars on mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-container" class="toast-container"></div>
+  </div>
+
+  <!-- SERVICE WORKER REGISTRATION -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
