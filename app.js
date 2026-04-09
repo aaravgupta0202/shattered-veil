@@ -570,7 +570,11 @@ const StartupUI = {
     form.style.display = 'block';
     const input = document.getElementById('player-name');
     input.value = '';
-    input.focus();
+    // Scroll form into view so it's visible on desktop without manual scrolling
+    setTimeout(() => {
+      form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      input.focus();
+    }, 50);
     document.getElementById('begin-btn').onclick = () => this.startNewGame();
     input.onkeydown = e => { if (e.key === 'Enter') this.startNewGame(); };
   },
