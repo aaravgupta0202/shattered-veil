@@ -39,16 +39,24 @@ body {
 /* ── STARTUP SCREEN ─────────────────────────────────────── */
 #startup-screen {
   position: fixed; inset: 0; z-index: 1000;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-start;
-  padding: 20px 16px 28px;
-  overflow-y: auto;
   background: var(--bg);
   opacity: 1; transition: opacity 0.6s ease;
-  gap: 0;
+  /* iOS Safari fix: overflow on fixed elements needs -webkit-overflow-scrolling */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 #startup-screen.fade-out { opacity: 0; pointer-events: none; }
 #startup-screen.hidden { display: none; }
+
+/* Inner wrapper handles flex layout so the fixed parent can scroll on iOS */
+.startup-inner {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 20px 16px 48px;
+  min-height: 100%;
+  width: 100%;
+  gap: 0;
+}
 
 /* Star canvas */
 #star-canvas {
@@ -168,6 +176,9 @@ body {
 /* Tab content */
 .tab-content { display: none; padding: 20px; }
 .tab-content.active { display: block; }
+
+/* Install section gets extra bottom padding so content isn't clipped */
+.install-section { padding-bottom: 8px; }
 
 /* ── SAVE SLOTS ── */
 .section-heading {
@@ -327,6 +338,7 @@ kbd {
   font-size: 0.72rem; color: var(--text-muted);
   letter-spacing: 0.1em; text-align: center;
   animation: fadeUp 1s ease 0.5s both;
+  width: 100%;
 }
 
 /* ── MODAL ──────────────────────────────────────────────── */
